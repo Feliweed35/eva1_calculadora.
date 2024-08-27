@@ -1,0 +1,80 @@
+Public Class Form1
+    Dim currentNumber As String = ""
+    Dim operation As String = ""
+    Dim result As Double = 0
+
+
+    Private Sub NumberButton_Click(sender As Object, e As EventArgs) Handles Btn0.Click, Btn1.Click, Btn2.Click, Btn3.Click, Btn4.Click, Btn5.Click, Btn6.Click, Btn7.Click, Btn8.Click, Btn9.Click
+        Dim button As Button = CType(sender, Button)
+        TxtDisplay.Text &= button.Text
+    End Sub
+
+
+    Private Sub BtnClear_Click(sender As Object, e As EventArgs) Handles BtnClear.Click
+        TxtDisplay.Text = ""
+        currentNumber = ""
+        operation = ""
+        result = 0
+    End Sub
+
+
+    Private Sub BtnSuma_Click(sender As Object, e As EventArgs) Handles BtnSuma.Click
+        SetOperation("+")
+    End Sub
+
+
+    Private Sub BtnResta_Click(sender As Object, e As EventArgs) Handles BtnResta.Click
+        SetOperation("-")
+    End Sub
+
+
+    Private Sub BtnMult_Click(sender As Object, e As EventArgs) Handles BtnMult.Click
+        SetOperation("x")
+    End Sub
+
+
+    Private Sub BtnDiv_Click(sender As Object, e As EventArgs) Handles BtnDiv.Click
+        SetOperation("/")
+    End Sub
+
+
+    Private Sub BtnIgual_Click(sender As Object, e As EventArgs) Handles BtnIgual.Click
+        If Not String.IsNullOrEmpty(currentNumber) Then
+            Try
+                Dim secondNumber As Double = Convert.ToDouble(TxtDisplay.Text)
+                Select Case operation
+                    Case "+"
+                        result += secondNumber
+                    Case "-"
+                        result -= secondNumber
+                    Case "x"
+                        result *= secondNumber
+                    Case "/"
+                        If secondNumber <> 0 Then
+                            result /= secondNumber
+                        Else
+                            MessageBox.Show("División por cero no permitida.")
+                            TxtDisplay.Text = ""
+                            Return
+                        End If
+                End Select
+                TxtDisplay.Text = result.ToString()
+                currentNumber = ""
+                operation = ""
+            Catch ex As Exception
+                MessageBox.Show("Error en la operación.")
+                TxtDisplay.Text = ""
+            End Try
+        End If
+    End Sub
+
+
+    Private Sub SetOperation(op As String)
+        If Not String.IsNullOrEmpty(TxtDisplay.Text) Then
+            currentNumber = TxtDisplay.Text
+            result = Convert.ToDouble(currentNumber)
+            TxtDisplay.Text = ""
+            operation = op
+        End If
+    End Sub
+End Class
